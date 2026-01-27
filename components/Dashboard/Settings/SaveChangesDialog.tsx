@@ -15,7 +15,7 @@ interface SaveChangesDialogProps {
 export default function SaveChangesDialog(props: SaveChangesDialogProps) {
     const [password, setPassword] = React.useState<string | null>(null);
     const auth = useAuth();
-    const router = useRouter();
+
     function updatePassword(event: React.ChangeEvent<HTMLInputElement>) {
         setPassword(event.currentTarget.value);
     }
