@@ -1,7 +1,6 @@
 'use client'
 
 import {useAuth} from '@/components/Auth/AuthContext'
-import {AppwriteException} from "appwrite";
 import React, {useState} from "react";
 
 export default function useLoginPage() {

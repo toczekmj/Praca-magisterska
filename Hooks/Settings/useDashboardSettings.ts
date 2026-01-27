@@ -1,3 +1,4 @@
+'use client'
 import {useAuth} from "@/components/Auth/AuthContext";
 import {Models} from "appwrite";
 import React, {useEffect, useState} from "react";
@@ -11,6 +12,7 @@ export function useDashboardSettings() {
     const [newPassword, setNewPassword] = useState<string | undefined>(undefined);
 
     useEffect(() => {
+        console.log("useDashboardSettings called");
         auth.getUser().then(u => setUser(u));
     }, [auth])
 
