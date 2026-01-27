@@ -1,3 +1,4 @@
+'use client'
 import {account} from "@/lib/appwrite";
 import {AppwriteException, ID, Models, OAuthProvider} from "appwrite"
 import {useRouter} from "next/navigation";
