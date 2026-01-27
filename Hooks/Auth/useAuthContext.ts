@@ -29,7 +29,7 @@ export default function useAuthContext() {
     const login = async (email: string, password: string): Promise<void> => {
         const session = await account.createEmailPasswordSession({ email, password });
         setCurrent(session);
-        setCurrentUserInfo(await getUser());
+        //setCurrentUserInfo(await getUser());
         router.push('/dashboard');
     }
 
@@ -129,10 +129,10 @@ export default function useAuthContext() {
             .catch(() => setCurrent(null))
             .finally(() => setLoading(false));
 
-        getUser()
-            .then(setCurrentUserInfo)
-            .catch(() => setCurrentUserInfo(null))
-            .finally(() => setLoading(false));
+        // getUser()
+        //     .then(setCurrentUserInfo)
+        //     .catch(() => setCurrentUserInfo(null))
+        //     .finally(() => setLoading(false));
 
     }, []);
 
