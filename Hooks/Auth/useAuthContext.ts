@@ -1,6 +1,6 @@
 'use client'
 import {account} from "@/lib/appwrite";
-import {AppwriteException, ID, Models, OAuthProvider} from "appwrite"
+import {AppwriteException, ID, Models} from "appwrite"
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 
@@ -9,8 +9,6 @@ export interface AuthContextType {
     loading: boolean;
     currentUserInfo: Models.User | null;
     login: (email: string, password: string) => Promise<void>;
-    loginOAuth2Google: () => Promise<void>;
-    loginOAuth2GitHub: () => Promise<void>;
     logout: () => Promise<void>;
     register: (email: string, name: string, password: string) => Promise<void>;
     updatePassword: (newPassword: string, oldPassword: string) => Promise<void>;
@@ -29,26 +27,8 @@ export default function useAuthContext() {
     const login = async (email: string, password: string): Promise<void> => {
         const session = await account.createEmailPasswordSession({ email, password });
         setCurrent(session);
-        console.log("Called login() - session created - current set, now settings userinfo")
         setCurrentUserInfo(await getUser());
-        console.log("userInfo set - redirecting to dashboard")
         router.push('/dashboard');
-    }
-
-    const loginOAuth2Google = async () => {
-        account.createOAuth2Token({
-            provider: OAuthProvider.Google,
-            success: "http://localhost:3000/dashboard",
-            failure: "http://localhost:3000/login",
-        });
-    }
-
-    const loginOAuth2GitHub = async () => {
-        account.createOAuth2Session({
-            provider: OAuthProvider.Github,
-            success: "http://localhost:3000/dashboard",
-            failure: "http://localhost:3000/login",
-        });
     }
 
     const logout = async (): Promise<void> => {
@@ -121,7 +101,6 @@ export default function useAuthContext() {
     };
 
     const getUser = async (): Promise<Models.User | null> => {
-        console.log("getUser called in useAuthContext in getUser() function")
         return await account.get();
     }
 
@@ -134,10 +113,7 @@ export default function useAuthContext() {
 
         getUser()
             .then(setCurrentUserInfo)
-            .catch((e) => {
-                console.warn("ERROR IN getUser() in useAuthContext useEffect()");
-                console.error(e);
-                console.error(e.message);
+            .catch(() => {
                 setCurrentUserInfo(null)
             })
             .finally(() => setLoading(false));
@@ -149,8 +125,6 @@ export default function useAuthContext() {
         currentUserInfo,
         loading,
         login,
-        loginOAuth2Google,
-        loginOAuth2GitHub,
         logout,
         register,
         updatePassword,

@@ -4,7 +4,7 @@ import {useAuth} from '@/components/Auth/AuthContext'
 import React, {useState} from "react";
 
 export default function useLoginPage() {
-    const { login, register, loginOAuth2Google, loginOAuth2GitHub} = useAuth();
+    const { login, register } = useAuth();
     const [isSignUp, setIsSignUp] = useState(false);
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -25,24 +25,6 @@ export default function useLoginPage() {
         }
         finally {
             form.reset();
-        }
-    }
-
-    const handleLoginWithGoogle = async () => {
-        try {
-            await loginOAuth2Google();
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
-
-    const handleLoginWithGitHub = async () => {
-        try {
-            await loginOAuth2GitHub();
-        }
-        catch (error) {
-            console.error(error);
         }
     }
 
@@ -69,8 +51,6 @@ export default function useLoginPage() {
         isSignUp,
         setIsSignUp,
         handleLogin,
-        handleLoginWithGoogle,
-        handleLoginWithGitHub,
         handleRegistration,
     }
 }

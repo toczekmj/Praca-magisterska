@@ -12,7 +12,6 @@ export function useDashboardSettings() {
     const [newPassword, setNewPassword] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        console.log("useDashboardSettings called");
         auth.getUser().then(u => setUser(u));
     }, [auth])
 
