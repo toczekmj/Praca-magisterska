@@ -11,8 +11,6 @@ export default function LoginPage() {
         isSignUp,
         setIsSignUp,
         handleLogin,
-        handleLoginWithGoogle,
-        handleLoginWithGitHub,
         handleRegistration
     } = useLoginPage();
 
@@ -57,20 +55,6 @@ export default function LoginPage() {
                 }
 
             </Flex>
-            <Box>
-                <Button size="4"
-                        variant="surface"
-                        onClick={() => handleLoginWithGoogle()}>
-                    Log in with Google
-                </Button>
-            </Box>
-            <Box>
-                <Button size="4"
-                        variant="surface"
-                        onClick={() => handleLoginWithGitHub()}>
-                    Log in with GitHub
-                </Button>
-            </Box>
         </div>
     );
 }
