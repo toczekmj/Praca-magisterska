@@ -18,7 +18,7 @@ export default function PropertyUpdateCard(props: PropertyUpdateCardProps) {
                 <TextField.Root size="3"
                                 placeholder={props.placeholder}
                                 onChange={props.onchange}
-                                value={props.value}
+                                value={props.value ?? ""}
                                 type={props.isConfidential ? "password" : "email"}>
                     <TextField.Slot>
                         <LucideMail/>

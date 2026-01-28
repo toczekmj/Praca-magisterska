@@ -4,6 +4,7 @@ import {AuthProvider} from '@/components/Auth/AuthContext';
 import {Theme} from "@radix-ui/themes";
 import {Navbar} from "@/components/Navbar";
 import React from "react";
+import Sidebar from "@/components/Dashboard/Navigation/SideBar";
 
 export const metadata: Metadata = {
     title: 'Ideas Tracker',
@@ -25,7 +26,12 @@ export default function RootLayout({
                        scaling="95%">
                     <AuthProvider>
                         <Navbar />
-                        {children}
+                        <div className="h-full flex flex-col items-center">
+                            <Sidebar/>
+                            <div className="flex flex-col">
+                                {children}
+                            </div>
+                        </div>
                     </AuthProvider>
                     <script>0</script>
                 </Theme>

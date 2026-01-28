@@ -17,9 +17,9 @@ export function useDashboardSettings() {
     }, [auth])
 
     function onSaveSuccess() {
-        setEmail("");
-        setName("");
-        setNewPassword("");
+        setEmail(undefined);
+        setName(undefined);
+        setNewPassword(undefined);
         auth.getUser().then(u => setUser(u));
     }
 

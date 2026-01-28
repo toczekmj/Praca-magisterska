@@ -4,10 +4,10 @@ import {Models} from "appwrite";
 import React from "react";
 
 interface SaveChangesDialogProps {
-    currentUserInfo: Models.User | null | undefined;
-    email: string | undefined | null;
-    name: string | undefined | null;
-    password: string | undefined | null;
+    currentUserInfo?: Models.User | null;
+    email?: string;
+    name?: string;
+    password?: string;
     onSaveSuccess?: () => void;
 }
 
@@ -64,7 +64,7 @@ export default function SaveChangesDialog(props: SaveChangesDialogProps) {
                         </Table.Header>
                         <Table.Body>
                             {
-                                props.email != undefined ? (
+                                props.email != null ? (
                                     <Table.Row>
                                         <Table.ColumnHeaderCell>E-mail</Table.ColumnHeaderCell>
                                         <Table.Cell>{props.currentUserInfo?.email}</Table.Cell>
@@ -73,7 +73,7 @@ export default function SaveChangesDialog(props: SaveChangesDialogProps) {
                                 ) : (<></>)
                             }
                             {
-                                props.name != undefined  ? (
+                                props.name != null  ? (
                                     <Table.Row>
                                         <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
                                         <Table.Cell>{props.currentUserInfo?.name}</Table.Cell>
@@ -82,7 +82,7 @@ export default function SaveChangesDialog(props: SaveChangesDialogProps) {
                                 ) : (<></>)
                             }
                             {
-                                props.password != undefined ? (
+                                props.password != null ? (
                                     <Table.Row>
                                         <Table.ColumnHeaderCell>Password</Table.ColumnHeaderCell>
                                         <Table.Cell>********</Table.Cell>
