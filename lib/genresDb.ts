@@ -2,16 +2,23 @@ import {tablesDb} from "@/lib/appwrite";
 import {Query} from "appwrite";
 
 export enum GenreColumns {
+    "ID" = "$id",
+    "CreatedAt" = "$createdAt",
+    "UpdatedAt" = "$updatedAt",
     "ReadableName" = "ReadableName",
     "Slug" = "slug"
 }
 
-export async function GetAllGenres(){
+const dbId = process.env.APPWRITE_DB_ID!;
+const tableId = process.env.APPWRITE_GENRES_TABLE!;
+
+export async function GetFolders(){
     const result = await tablesDb.listRows({
-        databaseId: "697a22dd0016001f7e6b",
-        tableId: "availablegenres",
+        databaseId: dbId,
+        tableId: tableId,
         queries: [
-            Query.limit(10)
+            Query.select([GenreColumns.ReadableName, GenreColumns.Slug]),
+            Query.orderDesc(GenreColumns.UpdatedAt),
         ],
     });
 

@@ -3,18 +3,17 @@
 import FolderButton from "@/components/Files/FolderButton";
 import {Models} from "appwrite";
 import {GenreColumns} from "@/lib/genresDb";
-import {Text, Card, Separator} from "@radix-ui/themes";
-import {useState} from "react";
+import {Card, Separator, Text} from "@radix-ui/themes";
 
 interface FolderBrowserProps {
     folders: Models.DefaultRow[];
+    selectedFolder: string | null;
+    onFolderSelect: (folderId: string) => void;
 }
 
-export default function FolderBrowser({folders} : FolderBrowserProps) {
-    const [selectedFolder, setSelectedFolder] = useState<Models.DefaultRow>();
-
-    const isSelectedFolder = (folder: Models.DefaultRow) => {
-        return selectedFolder === folder;
+export default function FolderBrowser({folders, selectedFolder, onFolderSelect} : FolderBrowserProps) {
+    const isSelectedFolder = (folderSlug: string) => {
+        return selectedFolder === folderSlug;
     }
 
     return (
@@ -27,8 +26,8 @@ export default function FolderBrowser({folders} : FolderBrowserProps) {
                         folders.map((genre, index) => (
                             <FolderButton key={index}
                                           label={genre[GenreColumns.ReadableName]}
-                                          selected={isSelectedFolder(genre[GenreColumns.ReadableName])}
-                                          onFolderClick={() => setSelectedFolder(genre[GenreColumns.ReadableName])}
+                                          selected={isSelectedFolder(genre[GenreColumns.Slug])}
+                                          onFolderClick={() => onFolderSelect(genre[GenreColumns.Slug])}
 
                             />
                         ))
