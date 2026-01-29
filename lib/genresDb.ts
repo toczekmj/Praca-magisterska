@@ -1,4 +1,4 @@
-import {tablesDb, database} from "@/lib/appwrite";
+import {tablesDb} from "@/lib/appwrite";
 import {ID, Query} from "appwrite";
 
 export enum GenreColumns {
@@ -35,12 +35,11 @@ export async function GetFiles(folderId: string)
         ]
     })
 
-    console.log(result.rows);
     return result.rows;
 }
 
 export async function DeleteFolder(folderId: string) {
-    const result = await tablesDb.deleteRow({
+    await tablesDb.deleteRow({
         databaseId: "697a22dd0016001f7e6b",
         tableId: "genres",
         rowId: folderId,
@@ -48,7 +47,7 @@ export async function DeleteFolder(folderId: string) {
 }
 
 export async function CreateFolder(folderName: string) {
-    const result = await tablesDb.createRow({
+    return await tablesDb.createRow({
         rowId: ID.unique(),
         databaseId: "697a22dd0016001f7e6b",
         tableId: "genres",
@@ -56,7 +55,5 @@ export async function CreateFolder(folderName: string) {
             "ReadableName": folderName,
             "Slug": folderName + "-slug",
         }
-    })
-    console.log(result);
-    return result;
+    });
 }

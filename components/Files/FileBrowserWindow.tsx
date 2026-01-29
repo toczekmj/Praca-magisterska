@@ -20,12 +20,15 @@ export default function FileBrowserWindow({folders, onFolderModify}: FileBrowser
         switch (event) {
             case FolderUpdateEvent.Select:
                 setSelectedFolder(folderId);
+                onFolderModify(FolderUpdateEvent.Select)
                 break;
             case FolderUpdateEvent.Delete:
                 onFolderModify(FolderUpdateEvent.Delete);
+                setSelectedFolder(null);
                 break;
             case FolderUpdateEvent.Create:
                 onFolderModify(FolderUpdateEvent.Create);
+                setSelectedFolder(folderId);
                 break;
             case FolderUpdateEvent.Update:
                 onFolderModify(FolderUpdateEvent.Update);

@@ -20,14 +20,16 @@ export default function FolderBrowser({folders, selectedFolder, onFolderSelect} 
     async function deleteFolder() {
         if (selectedFolder) {
             await DeleteFolder(selectedFolder);
+            folders = folders?.filter(row => row[GenreColumns.ID] != selectedFolder) ?? null;
             onFolderSelect(FolderUpdateEvent.Delete, null);
         }
     }
 
     async function createFolder(){
-        const result = await CreateFolder("Test3");
-        console.log(result);
-        onFolderSelect(FolderUpdateEvent.Create, result[GenreColumns.ID]);
+        const result = await CreateFolder("Test4567");
+        // TODO: create way to set name for new folder
+        folders?.push(result);
+        onFolderSelect(FolderUpdateEvent.Select, result[GenreColumns.ID]);
     }
 
     return (
