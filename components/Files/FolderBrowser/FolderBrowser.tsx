@@ -4,7 +4,7 @@ import FolderButton from "@/components/Files/FolderBrowser/FolderButton";
 import {Models} from "appwrite";
 import {CreateFolder, DeleteFolder, FolderColumns, UpdateFolder} from "@/lib/genresDb";
 import {Button, Card, Separator, Text} from "@radix-ui/themes";
-import {FolderUpdateEvent} from "@/app/Enums/FolderUpdateEvent";
+import {FolderUpdateEvent} from "@/Enums/FolderUpdateEvent";
 import CreateFolderDialog from "@/components/Files/FolderBrowser/Dialogs/CreateFolderDialog";
 import EditFolderDialog from "@/components/Files/FolderBrowser/Dialogs/EditFolderDialog";
 import {useAuth} from "@/components/Auth/AuthContext";
