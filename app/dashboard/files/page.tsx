@@ -1,12 +1,28 @@
-import FileBrowser from "@/components/Files/AvailableGenres";
+'use client'
 
+import FileBrowserWindow from "@/components/Files/FileBrowserWindow";
+import {useEffect, useState} from "react";
+import {Models} from "appwrite";
+import {GetFolders} from "@/lib/genresDb";
+import {FolderUpdateEvent} from "@/app/Enums/FolderUpdateEvent";
 
-export default async function Files() {
+export default function Files() {
 
+    const [folders, setFolders] = useState<Models.DefaultRow[] | null>(null);
+    const [event, setEvent] = useState<FolderUpdateEvent | null>(null);
+
+    useEffect(() => {
+        if (event != FolderUpdateEvent.Select){
+            GetFolders().then(v => setFolders(v));
+        }
+    }, [event])
 
     return (
         <div className="browser">
-            <FileBrowser />
+            <FileBrowserWindow
+                folders={folders}
+                onFolderModify={setEvent}
+            />
         </div>
     );
 }

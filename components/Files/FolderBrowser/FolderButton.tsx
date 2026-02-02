@@ -11,11 +11,12 @@ interface FolderButtonProps {
 export default function FolderButton({label, selected, onFolderClick}: FolderButtonProps) {
     return (
         <Button size={"3"}
-                variant={selected ? "solid" : "surface"}
+                variant={selected ? "solid" : "outline"}
                 style={{
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    flexWrap: "nowrap",
                 }}
                 onClick={onFolderClick}
         >
