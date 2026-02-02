@@ -22,11 +22,11 @@ export default function Sidebar() {
     return currentUserInfo ? (
         <div className="flex flex-col gap-5 my-3 py-3 px-8 rounded-4xl w-fit"
              style={{backgroundColor: 'var(--gray-3)'}}>
-            <MainNav isActive={isParentActive} size={"5"} />
+            <MainNav isActive={isParentActive} size={"5"}/>
             {
                 pathname.includes(Pages.dashboard) ? (
                     <div className="flex flex-col items-start">
-                        <SubNav isActive={isActive} size={"4"} parent={Pages.dashboard} />
+                        <SubNav isActive={isActive} size={"4"} parent={Pages.dashboard}/>
                     </div>
                 ) : <></>
             }

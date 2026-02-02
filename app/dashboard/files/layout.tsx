@@ -1,24 +1,16 @@
 'use client'
-import React, {useEffect} from "react";
+import React from "react";
 import {Container} from "@radix-ui/themes";
-import {useAuth} from "@/components/Auth/AuthContext";
-import {useRouter} from "next/navigation";
+import Protected from "@/components/Auth/Protected";
 
 export default function FilesLayout({children}: { children: React.ReactNode }) {
-    const {currentUserInfo} = useAuth();
-    const router = useRouter();
-    useEffect(() => {
-        console.log(currentUserInfo);
-        if (!currentUserInfo) {
-            router.push('/login');
-        }
-    }, [currentUserInfo, router]);
-
     return (
-        <main className="drop-shadow-2xl drop-shadow-amber-50/10">
-            <Container>
-                {children}
-            </Container>
-        </main>
+        <Protected>
+            <main className="drop-shadow-2xl drop-shadow-amber-50/10">
+                <Container>
+                    {children}
+                </Container>
+            </main>
+        </Protected>
     );
 }

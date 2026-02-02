@@ -107,7 +107,7 @@ export default function useAuthContext() {
             acc = await account.get()
         }
         catch (error) {
-            console.error("Could not find user", error);
+            console.warn(error);
         }
         return acc;
     }
