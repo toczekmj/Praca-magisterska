@@ -1,5 +1,5 @@
 from appwrite.client import Client
-from appwrite.services.databases import Databases
+from appwrite.services.tables_db import TablesDB
 from appwrite.services.storage import Storage
 import io
 import json
@@ -104,8 +104,8 @@ def main(context):
 
     database_id = os.environ.get("APPWRITE_DATABASE_ID") or os.environ.get("NEXT_PUBLIC_APPWRITE_DATABASE_ID")
     bucket_id = os.environ.get("APPWRITE_BUCKET_ID") or os.environ.get("NEXT_PUBLIC_APPWRITE_BUCKET_ID")
-    collection_id = os.environ.get("APPWRITE_FILES_COLLECTION_ID") or "files"
-
+    table_id = os.environ.get("APPWRITE_FILES_COLLECTION_ID") or "files"
+    context.log(f"Config - Endpoint: {endpoint}, Project ID: {project_id}, Database ID: {database_id}, Bucket ID: {bucket_id}, Collection ID: {table_id}")
     if not endpoint or not project_id or not api_key or not database_id or not bucket_id:
         return context.res.json({
             "ok": False,
@@ -117,11 +117,14 @@ def main(context):
     client.set_project(project_id)
     client.set_key(api_key)
 
-    databases = Databases(client)
+    tablesDb = TablesDB(client)
     storage = Storage(client)
 
     try:
-        document = databases.get_document(database_id, collection_id, file_id)
+        context.log(f"Querying for file document with fileId: {file_id}")
+        document = tablesDb.list_rows(database_id, table_id, queries = [
+            Query.equal("fileId", file_id)
+        ])
     except Exception as exc:
         context.error(str(exc))
         return context.res.json({
@@ -130,6 +133,7 @@ def main(context):
         })
 
     bucket_file_id = document.get("FileId") or document.get("fileId")
+    context.log(f"Retrieved document: {document}, bucketFileId: {bucket_file_id}")
     if not bucket_file_id:
         return context.res.json({
             "ok": False,
@@ -137,6 +141,7 @@ def main(context):
         })
 
     try:
+        context.log(f"Downloading file from bucket: bucketId={bucket_id}, bucketFileId={bucket_file_id}")
         file_bytes = storage.get_file_download(bucket_id, bucket_file_id)
     except Exception as exc:
         context.error(str(exc))
@@ -154,6 +159,7 @@ def main(context):
             "error": "Unsupported file type. Only WAV is accepted."
         })
 
+    context.log(f"File downloaded successfully, size: {len(file_bytes)} bytes. Parsing WAV data...")
     try:
         samples, sample_rate = _parse_wav_samples(file_bytes)
     except Exception as exc:
@@ -169,6 +175,7 @@ def main(context):
             "error": "No samples found in WAV file."
         })
 
+    context.log(f"WAV parsed successfully: {samples.size} samples at {sample_rate} Hz. Computing FFT...")
     n = samples.size
     fft_values = np.fft.rfft(samples)
     magnitudes = np.abs(fft_values)
