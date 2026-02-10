@@ -102,7 +102,8 @@ def main(context):
     endpoint = os.environ.get("APPWRITE_FUNCTION_API_ENDPOINT") or os.environ.get("APPWRITE_ENDPOINT") or os.environ.get("NEXT_PUBLIC_APPWRITE_ENDPOINT")
     project_id = os.environ.get("APPWRITE_FUNCTION_PROJECT_ID") or os.environ.get("NEXT_PUBLIC_APPWRITE_PROJECT_ID")
     api_key = (getattr(context.req, "headers", {}) or {}).get("x-appwrite-key") or os.environ.get("APPWRITE_FUNCTION_API_KEY")
-
+    context.log(f"Appwrite API Key from header: {'present' if api_key else 'missing'}")
+    context.log(f"API KEY: {api_key} (should be hidden in production logs)")
     database_id = os.environ.get("APPWRITE_DATABASE_ID") or os.environ.get("NEXT_PUBLIC_APPWRITE_DATABASE_ID")
     bucket_id = os.environ.get("APPWRITE_BUCKET_ID") or os.environ.get("NEXT_PUBLIC_APPWRITE_BUCKET_ID")
     table_id = os.environ.get("APPWRITE_FILES_COLLECTION_ID") or "files"
@@ -123,9 +124,10 @@ def main(context):
 
     try:
         context.log(f"Querying for file document with fileId: {file_id}")
-        document = tablesDb.list_rows(database_id, table_id, queries = [
+        documents = tablesDb.list_rows(database_id, table_id, queries = [
             Query.equal("fileId", file_id)
         ])
+        document = documents["rows"][0] if documents.get("rows") else document = documents[0] if isinstance(documents, list) and len(documents) > 0 else None 
     except Exception as exc:
         context.error(str(exc))
         return context.res.json({
