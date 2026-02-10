@@ -1,5 +1,6 @@
 from appwrite.client import Client
 from appwrite.services.tables_db import TablesDB
+from appwrite.query import Query
 from appwrite.services.storage import Storage
 import io
 import json
