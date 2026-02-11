@@ -1,10 +1,12 @@
 import {useEffect, useState} from "react";
 import {DeleteFile, GetFiles} from "@/lib/Database/Services/FileService";
 import {Models} from "appwrite";
+import {useAuth} from "@/components/Auth/AuthContext";
 
 function useFileBrowserContext(folderId: string | null) {
     const [files, setFiles] = useState<Models.DefaultRow[]>([]);
     const [loading, setLoading] = useState(false);
+    const {currentUserInfo} = useAuth();
 
     useEffect(() => {
         if (!folderId) {
@@ -52,6 +54,7 @@ function useFileBrowserContext(folderId: string | null) {
         fetchFiles,
         handleUploadComplete,
         deleteFile,
+        currentUserInfo
     }
 }
 

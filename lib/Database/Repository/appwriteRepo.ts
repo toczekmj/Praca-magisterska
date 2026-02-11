@@ -1,4 +1,4 @@
-import {tablesDb} from "@/lib/Database/appwrite";
+import {tablesDb} from "@/lib/appwrite";
 import {ID, Models, Permission, Role} from "appwrite";
 
 export {

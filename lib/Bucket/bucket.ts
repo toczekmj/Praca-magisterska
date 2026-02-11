@@ -1,4 +1,4 @@
-import {storage} from "@/lib/Database/appwrite";
+import {storage} from "@/lib/appwrite";
 import {ID, Permission, Role} from "appwrite";
 
 const bucketId = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID as string;

@@ -1,5 +1,5 @@
 import {FolderColumns} from "@/lib/Database/Enums/FolderColumns";
-import {tablesDb} from "@/lib/Database/appwrite";
+import {tablesDb} from "@/lib/appwrite";
 import {Query} from "appwrite";
 import {createFileSlug} from "@/lib/slugify";
 import {FileColumns} from "@/lib/Database/Enums/FileColumns";

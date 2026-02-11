@@ -22,6 +22,11 @@ export default function SubNav({isActive, size}: SubNavProps) {
                     <Text size={size ?? "1"}>File management</Text>
                 </Link>
             </TabNav.Link>
+            <TabNav.Link asChild active={isActive(Pages.charts)}>
+                <Link href={Pages.charts}>
+                    <Text size={size ?? "1"}>Charts</Text>
+                </Link>
+            </TabNav.Link>
         </TabNav.Root>
     );
 }

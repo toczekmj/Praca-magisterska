@@ -1,6 +1,6 @@
 'use client'
 
-import {account} from "@/lib/Database/appwrite";
+import {account} from "@/lib/appwrite";
 import {AppwriteException, ID, Models} from "appwrite"
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
@@ -115,7 +115,9 @@ export default function useAuthContext() {
 
     useEffect(() => {
         account
-            .getSession("current")
+            .getSession({
+                sessionId: "current"
+            })
             .then(setCurrent)
             .catch(() => setCurrent(null))
             .finally(() => setLoading(false));
