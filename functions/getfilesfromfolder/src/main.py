@@ -17,7 +17,6 @@ def initialize_variables(context):
 
     global genre, rowid
     genre = json['genre']
-    rowid = json['rowid']
 
     client = (
         Client()
