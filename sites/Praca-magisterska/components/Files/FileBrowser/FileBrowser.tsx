@@ -17,6 +17,9 @@ export default function FileBrowser({folderId}: FileBrowserProps) {
             <div className={"flex flex-col gap-1 h-133"}>
                 <div className={"flex flex-row justify-between items-center"}>
                     <Text size={"5"}>Files</Text>
+
+                    <Text size={"5"}>Computed: {ctx.files.filter(f => f[FileColumns.IsTransformed] === true).length}/{ctx.files.length}</Text>
+
                     {
                         folderId ? (
                             <UploadFilesDialog onClose={ctx.handleUploadComplete} folderId={folderId}/>
@@ -36,7 +39,7 @@ export default function FileBrowser({folderId}: FileBrowserProps) {
                                 {
                                     ctx.files.map((file, index) => {
                                         return (
-                                            <File key={index} onDelete={ctx.deleteFile} name={file[FileColumns.FileName]} id={file.$id}/>
+                                            <File key={index} onDelete={ctx.deleteFile} name={file[FileColumns.FileName]} id={file.$id} isComputed={file[FileColumns.IsTransformed]}/>
                                         )
                                     })
                                 }
