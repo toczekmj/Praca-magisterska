@@ -116,7 +116,7 @@ def main(context):
                 "actual_permissions": row.get("$permissions")
             }
         )
-        context.log(f"Permission check result: {json_lib.dumps(permission_result)}")
+        context.log(f"Permission check result: {permission_result}")
 
         if not permission_result.get("has_permissions"):
             raise Exception("User does not have required permissions.")
