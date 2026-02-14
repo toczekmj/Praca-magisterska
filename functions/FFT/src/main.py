@@ -93,8 +93,8 @@ def main(context):
         bucket = Storage(client)
         functions = Functions(client)
         
-        raw_body = context.req
-        body_json = json_lib.dumps(raw_body)
+        raw_body = context.req.body
+        body_json = json_lib.loads(raw_body)
         user_id = body_json.get("user_id")
         file_id = body_json.get("file_id")
 
