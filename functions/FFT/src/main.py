@@ -102,7 +102,6 @@ def _instantiate_required_clients():
 
 
 def _parse_request_body(body):
-    # body_json = json_lib.loads(body)
     user_id = body["user_id"]
     file_id = body["file_id"]
     return user_id, file_id
