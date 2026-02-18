@@ -47,13 +47,15 @@ function useFileBrowserContext(folderId: string | null) {
     }
 
     const deleteFile = async (id: string) => {
+        const file = files.find(f => f.$id === id)!;
         try {
-            await DeleteFile(id);
             const newFiles = files.filter((f) => f.$id !== id);
             setFiles(newFiles);
+            await DeleteFile(id);
         }
         catch (error) {
             // TODO: handle this error properly
+            setFiles(prev => [...prev, file])
         }
     }
 

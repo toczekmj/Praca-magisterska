@@ -100,6 +100,6 @@ export async function GetCsvFileContent(fileId: string): Promise<{ freq: number;
             const [freqStr, magStr] = line.split(",").map((cell) => cell.trim());
             return { freq: parseFloat(freqStr) ?? 0, mag: parseFloat(magStr) ?? 0 };
         })
-        .slice(0, 3000);
+        .slice(0, 30_000);
     return dict;
 }
