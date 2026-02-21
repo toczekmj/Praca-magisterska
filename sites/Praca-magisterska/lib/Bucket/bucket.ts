@@ -1,7 +1,7 @@
+import { BUCKET } from "@/Generated/appwrite/constants";
 import { client, storage } from "@/lib/appwrite";
 import { ID, Permission, Role } from "appwrite";
 
-const bucketId = process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID as string;
 
 export function CreateFileInBucket(
     file: File,
@@ -17,7 +17,7 @@ export function CreateFileInBucket(
     return storage.createFile({
         file: file,
         fileId: ID.unique(),
-        bucketId: bucketId,
+        bucketId: BUCKET,
         onProgress: onProgress,
         permissions: [
             Permission.read(Role.user(userId)),
@@ -29,7 +29,7 @@ export function CreateFileInBucket(
 
 export async function DeleteFileFromBucket(fileId: string) {
     await storage.deleteFile({
-        bucketId: bucketId,
+        bucketId: BUCKET,
         fileId: fileId,
     })
 }
@@ -37,21 +37,21 @@ export async function DeleteFileFromBucket(fileId: string) {
 export async function GetFileMetadata(fileId: string) {
     // Returns storage file metadata (throws if not found)
     return await storage.getFile({
-        bucketId: bucketId,
+        bucketId: BUCKET,
         fileId: fileId,
     });
 }
 
 export function GetFileDownloadUrl(fileId: string): string {
     return storage.getFileDownload({
-        bucketId: bucketId,
+        bucketId: BUCKET,
         fileId: fileId,
     });
 }
 
 export function GetFileViewUrl(fileId: string): string {
     return storage.getFileView({
-        bucketId: bucketId,
+        bucketId: BUCKET,
         fileId: fileId,
     });
 }

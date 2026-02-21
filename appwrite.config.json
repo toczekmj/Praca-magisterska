@@ -92,6 +92,29 @@
             "commands": "pip install -r requirements.txt",
             "scopes": [],
             "specification": "s-0.5vcpu-512mb"
+        },
+        {
+            "$id": "initializemodelcreation",
+            "name": "InitializeModelCreation",
+            "runtime": "python-3.12",
+            "specification": "s-8vcpu-8gb",
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "scopes": [
+                "users.read"
+            ],
+            "schedule": "",
+            "timeout": 15,
+            "enabled": true,
+            "logging": true,
+            "entrypoint": "src/main.py",
+            "commands": "pip install -r requirements.txt",
+            "ignore": [
+                "__pypackages__"
+            ],
+            "path": "functions/InitializeModelCreation"
         }
     ],
     "sites": [
@@ -159,6 +182,13 @@
                     "twoWayKey": "genre",
                     "onDelete": "cascade",
                     "side": "parent"
+                },
+                {
+                    "key": "transformation_ongoing",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
                 }
             ],
             "indexes": []
@@ -166,8 +196,7 @@
         {
             "$id": "files",
             "$permissions": [
-                "create(\"users\")",
-                "delete(\"users\")"
+                "create(\"users\")"
             ],
             "databaseId": "698b1344001fada58b06",
             "name": "files",
@@ -201,6 +230,15 @@
                     "required": true,
                     "array": false,
                     "size": 200,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "data_file_id",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 300,
                     "default": null,
                     "encrypt": false
                 }

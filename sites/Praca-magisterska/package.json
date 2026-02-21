@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "patch:appwrite": "node scripts/patch-appwrite-types.js",
+    "generate:appwrite": "cd ../.. && appwrite generate && cd sites/Praca-magisterska && npm run patch:appwrite"
   },
   "dependencies": {
     "@radix-ui/react-direction": "^1.1.1",

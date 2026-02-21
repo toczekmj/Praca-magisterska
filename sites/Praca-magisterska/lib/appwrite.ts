@@ -1,10 +1,11 @@
+import { ENDPOINT, PROJECT_ID } from "@/Generated/appwrite/constants";
 import {Client, Account, Functions, TablesDB, Storage} from "appwrite"
 
 const client = new Client();
 
 client
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
+    .setEndpoint(ENDPOINT)
+    .setProject(PROJECT_ID);
 
 export { client };
 export const account = new Account(client);
