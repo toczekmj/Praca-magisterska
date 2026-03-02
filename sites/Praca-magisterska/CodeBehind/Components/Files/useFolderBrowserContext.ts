@@ -25,7 +25,6 @@ function useFolderBrowserContext({selectedFolder, onFolderSelect, folders} : Fol
         // I should probably refactor this later.
         if (selectedFolder) {
             await DeleteFolder(selectedFolder);
-            folders = folders?.filter(row => row[FolderColumns.ID] != selectedFolder) ?? null;
             onFolderSelect(FolderUpdateEvent.Delete, null);
         }
     }
@@ -37,7 +36,6 @@ function useFolderBrowserContext({selectedFolder, onFolderSelect, folders} : Fol
         }
 
         const result = await CreateFolder(name, currentUserInfo?.$id ?? "");
-        folders?.push(result);
         onFolderSelect(FolderUpdateEvent.Select, result[FolderColumns.ID]);
     }
 
@@ -48,9 +46,7 @@ function useFolderBrowserContext({selectedFolder, onFolderSelect, folders} : Fol
         }
 
         const result = await UpdateFolder(selectedFolder, name);
-        console.log(result);
         folders = folders?.filter(f => f.$id != selectedFolder) ?? null;
-        folders?.push(result);
         onFolderSelect(FolderUpdateEvent.Update, selectedFolder)
     }
 

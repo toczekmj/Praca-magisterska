@@ -1,14 +1,14 @@
 import { FrequencyData } from "@/components/Dashboard/Charts/FrequencyChart";
+import { Files, Genres } from "@/Generated/appwrite";
 import { GetCsvFileContent } from "@/lib/Bucket/bucket";
 import { FileColumns } from "@/lib/Database/Enums/FileColumns";
 import { GetFile, GetFiles } from "@/lib/Database/Services/FileService";
 import { GetFolders } from "@/lib/Database/Services/FolderService";
-import { Models } from "appwrite";
 import { useEffect, useState } from "react";
 
 export function useChartContext() {
-    const [folders, setFolders] = useState<Models.DefaultRow[] | null>(null);
-    const [files, setFiles] = useState<Models.DefaultRow[] | null>(null);
+    const [folders, setFolders] = useState<Genres[] | null>(null);
+    const [files, setFiles] = useState<Files[] | null>(null);
     const [csvData, setCsvData] = useState<FrequencyData[] | null>();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -47,6 +47,9 @@ export function useChartContext() {
         const csvid = files
             ?.find(file => file[FileColumns.ID] === selectedFileId)
             ?.[FileColumns.CsvDataFileID];
+
+        if (!csvid) return;
+
         const csv = await GetCsvFileContent(csvid);
 
         // 3. set cache
