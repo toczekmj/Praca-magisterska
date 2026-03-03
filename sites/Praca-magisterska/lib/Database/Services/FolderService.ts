@@ -1,15 +1,15 @@
-import {createFileSlug} from "@/lib/slugify";
-import {FileColumns} from "@/lib/Database/Enums/FileColumns";
-import {GetFiles} from "@/lib/Database/Services/FileService";
-import {DeleteFileFromBucket} from "@/lib/Bucket/bucket";
+import { createFileSlug } from "@/lib/slugify";
+import { FileColumns } from "@/lib/Database/Enums/FileColumns";
+import { GetFiles } from "@/lib/Database/Services/FileService";
+import { DeleteFileFromBucket } from "@/lib/Bucket/bucket";
 import { databases, Genres } from "@/Generated/appwrite";
 import { DATABASE } from "@/Generated/appwrite/constants";
-import { defaultFolderCache } from "@/lib/Cache/InMemoryFolderCache";
 import { ICache } from "@/lib/Cache/ICache";
+import { defaultFolderCache } from "@/lib/Cache/InMemoryFolderCache";
 
 const database = databases.use(DATABASE).use('genres');
 
-export async function GetFolders(folderCache: ICache<Genres> = defaultFolderCache): Promise<Genres[]> {
+export async function GetFolders(folderCache: ICache<"folders", Genres> = defaultFolderCache): Promise<Genres[]> {
     const cachedFolders = folderCache.get();
     if (cachedFolders) {
         return cachedFolders;
@@ -38,7 +38,7 @@ export async function IsComputationOngoing(folderId: string): Promise<boolean> {
             ]
         },
     })
-    
+
     const IsComputationOngoing = response.rows[0].transformation_ongoing;
     return IsComputationOngoing !== null && IsComputationOngoing !== undefined && IsComputationOngoing !== false;
 }
@@ -46,7 +46,7 @@ export async function IsComputationOngoing(folderId: string): Promise<boolean> {
 export async function CreateFolder(
     folderName: string,
     userId: string,
-    folderCache: ICache<Genres> = defaultFolderCache
+    folderCache: ICache<"folders", Genres> = defaultFolderCache
 ): Promise<Genres> {
     const data = {
         "ReadableName": folderName,
@@ -72,7 +72,7 @@ export async function CreateFolder(
 export async function UpdateFolder(
     folderId: string,
     folderName: string,
-    folderCache: ICache<Genres> = defaultFolderCache
+    folderCache: ICache<"folders", Genres> = defaultFolderCache
 ): Promise<Genres> {
     const data = {
         "ReadableName": folderName,
@@ -85,7 +85,7 @@ export async function UpdateFolder(
 
 export async function DeleteFolder(
     folderId: string,
-    folderCache: ICache<Genres> = defaultFolderCache
+    folderCache: ICache<"folders", Genres> = defaultFolderCache
 ): Promise<void> {
     const files = await GetFiles(folderId);
 

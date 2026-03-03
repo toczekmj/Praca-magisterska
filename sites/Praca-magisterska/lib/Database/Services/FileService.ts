@@ -1,13 +1,14 @@
-import { FileColumns } from "@/lib/Database/Enums/FileColumns";
 import { DeleteFileFromBucket } from "@/lib/Bucket/bucket";
 import { databases } from "@/Generated/appwrite/databases";
 import { DATABASE } from "@/Generated/appwrite/constants";
+import { ICache } from "@/lib/Cache/ICache";
 import { Files } from "@/Generated/appwrite/types";
-import { FileCache, defaultFileCache } from "@/lib/Cache/InMemoryFileCache";
+import { defaultFileCache } from "@/lib/Cache/InMemoryFileCache";
+
 
 const database = databases.use(DATABASE).use('files');
 
-export async function GetFile(fileId: string, fileCache: FileCache = defaultFileCache) {
+export async function GetFile(fileId: string, fileCache: ICache<string, Files> = defaultFileCache) {
     const cachedFile = fileCache.getSingleItem(fileId);
 
     if (cachedFile) {
@@ -26,7 +27,7 @@ export async function GetFile(fileId: string, fileCache: FileCache = defaultFile
     return response.rows[0];
 }
 
-export async function GetFiles(folderId: string, fileCache: FileCache = defaultFileCache) {
+export async function GetFiles(folderId: string, fileCache: ICache<string, Files> = defaultFileCache) {
     const cachedFiles = fileCache.get(folderId);
     if (cachedFiles) {
         return cachedFiles;
@@ -40,7 +41,7 @@ export async function GetFiles(folderId: string, fileCache: FileCache = defaultF
     return response.rows;
 }
 
-export async function LinkFile(folderId: string, fileId: string, fileName: string, userId: string, fileCache:FileCache = defaultFileCache) {
+export async function LinkFile(folderId: string, fileId: string, fileName: string, userId: string, fileCache:ICache<string, Files> = defaultFileCache) {
     const data = {
         "FileId": fileId,
         "FileName": fileName,
@@ -60,7 +61,7 @@ export async function LinkFile(folderId: string, fileId: string, fileName: strin
     return createdFile;
 }
 
-export async function DeleteFile(fileId: string, fileCache:FileCache = defaultFileCache) {
+export async function DeleteFile(fileId: string, fileCache:ICache<string, Files> = defaultFileCache) {
     const file = await GetFile(fileId, fileCache);
     const hasCsvData = file.data_file_id;
     const hasFile = file.FileId;
