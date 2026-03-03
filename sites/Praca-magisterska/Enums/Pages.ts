@@ -3,5 +3,6 @@ export enum Pages {
     "settings" = "/settings",
     "files" = "/dashboard/files",
     "charts" = "/dashboard/charts",
+    "realtime" = "/dashboard/realtime",
     "login" = "/login",
 }

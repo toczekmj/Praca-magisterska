@@ -27,6 +27,11 @@ export default function SubNav({isActive, size}: SubNavProps) {
                     <Text size={size ?? "1"}>Charts</Text>
                 </Link>
             </TabNav.Link>
+            <TabNav.Link asChild active={isActive(Pages.realtime)}>
+                <Link href={Pages.realtime}>
+                    <Text size={size ?? "1"}>Realtime</Text>
+                </Link>
+            </TabNav.Link>
         </TabNav.Root>
     );
 }

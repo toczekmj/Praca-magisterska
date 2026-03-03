@@ -1,5 +1,5 @@
 import { ENDPOINT, PROJECT_ID } from "@/Generated/appwrite/constants";
-import {Client, Account, Functions, TablesDB, Storage} from "appwrite"
+import {Client, Account, Functions, TablesDB, Storage, Realtime} from "appwrite"
 
 const client = new Client();
 
@@ -12,3 +12,4 @@ export const account = new Account(client);
 export const functions = new Functions(client);
 export const tablesDb = new TablesDB(client);
 export const storage = new Storage(client);
+export const realtime = new Realtime(client);

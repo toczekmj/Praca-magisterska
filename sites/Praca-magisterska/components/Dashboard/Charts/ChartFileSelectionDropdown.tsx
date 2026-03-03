@@ -1,14 +1,14 @@
 'use client'
 
+import { Files, Genres } from "@/Generated/appwrite";
 import { FileColumns } from "@/lib/Database/Enums/FileColumns";
 import { FolderColumns } from "@/lib/Database/Enums/FolderColumns";
 import { Select } from "@radix-ui/themes";
-import { Models } from "appwrite";
 import { Dispatch, SetStateAction } from "react";
 
 export interface ChartFileSelectionDropdownProps {
-    folders: Models.DefaultRow[] | null
-    files: Models.DefaultRow[] | null
+    folders: Genres[] | null
+    files: Files[] | null
     folderId: string;
     fileId: string;
     setFolderId: Dispatch<SetStateAction<string>>,
