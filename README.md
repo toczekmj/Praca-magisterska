@@ -1,6 +1,6 @@
 # Music Genre Classifier
 
-A machine learning-powered web application that allows users to train custom music genre classification models using their own audio datasets. Upload music files organized by genre, train a model using FFT (Fast Fourier Transform) analysis, and classify new audio samples.
+A machine learning–powered web application that lets you train custom music genre classification models on your own audio datasets. Organize music by genre, upload files into genre folders, train a model using FFT (Fast Fourier Transform) analysis, and classify new audio samples. The project is structured as an Appwrite-backed monorepo: the Next.js app lives in `sites/Praca-magisterska/`, and serverless ML/utility logic runs in `functions/`.
 
 ## Features
 
@@ -9,8 +9,10 @@ A machine learning-powered web application that allows users to train custom mus
 - **FFT Audio Analysis**: Automatic feature extraction using Fast Fourier Transform
 - **File Management**: Upload and organize audio files across genre-specific folders
 - **Model Classification**: Test your trained models with new audio samples
+- **Charts & FFT Visualization**: View frequency/chart visualizations for audio data (dashboard/charts)
 - **User Authentication**: Secure multi-user system with individual model management
-- **Dark Mode UI**: Beautiful dark theme interface using Radix UI and Dice UI
+- **In-Memory Caching**: File and folder caches (`lib/Cache`) to reduce Appwrite reads
+- **Dark Mode UI**: Dark theme interface using Radix UI and Dice UI
 
 ## Tech Stack
 
@@ -30,34 +32,54 @@ A machine learning-powered web application that allows users to train custom mus
 
 ## Project Structure
 
+The repository is a monorepo: the root holds Appwrite config and cloud functions; the Next.js app lives under `sites/Praca-magisterska/`.
+
 ```
-├── app/                    # Next.js app directory
-│   ├── dashboard/         # Dashboard pages
-│   │   ├── files/        # Genre folder & audio file management
-│   │   └── page.tsx      # Main dashboard (models overview)
-│   ├── login/            # Authentication page
-│   ├── settings/         # User settings page
-│   └── layout.tsx        # Root layout
-├── components/            # React components
-│   ├── Auth/             # Authentication components
-│   ├── Dashboard/        # Dashboard-related components
-│   │   ├── Home/Models/  # Model management components
-│   │   ├── Navigation/   # App navigation
-│   │   └── Settings/     # Settings components
-│   ├── Files/            # Audio file browser & genre folder management
-│   │   ├── FileBrowser/  # Audio file upload and management
-│   │   └── FolderBrowser/# Genre folder organization
-│   └── ui/               # Reusable UI components
-├── CodeBehind/           # Custom hooks and business logic
-│   ├── Components/       # Component-specific hooks
-│   │   ├── Auth/        # Authentication logic
-│   │   └── Files/       # File/folder management logic
-│   └── Pages/            # Page-specific hooks
-├── Enums/                # TypeScript enums
-├── lib/                  # Utility functions and database services
-│   ├── Database/         # Appwrite database services
-│   └── Bucket/           # Appwrite storage services
-└── public/               # Static assets
+Praca-magisterska/
+├── appwrite.config.json     # Appwrite project, DB tables, buckets, functions, sites
+├── functions/                # Appwrite serverless functions (Python)
+│   ├── FFT/                  # FFT-based audio feature extraction
+│   ├── CheckUserPermissions/ # Permission checks
+│   ├── TransformAllFilesInFolder/  # Batch transform files in a folder
+│   └── getfilesfromfolder/   # List files in a folder
+├── sites/
+│   └── Praca-magisterska/    # Next.js app (main frontend + API usage)
+│       ├── app/              # Next.js App Router
+│       │   ├── dashboard/    # Dashboard routes
+│       │   │   ├── files/    # Genre folders & audio file management
+│       │   │   ├── charts/   # FFT/chart visualizations
+│       │   │   └── page.tsx  # Main dashboard (models overview)
+│       │   ├── login/        # Authentication
+│       │   ├── settings/     # User settings
+│       │   ├── layout.tsx    # Root layout
+│       │   └── page.tsx      # Landing/home
+│       ├── components/       # React components
+│       │   ├── Auth/         # Auth UI & protected route wrapper
+│       │   ├── Dashboard/    # Dashboard UI
+│       │   │   ├── Home/Models/   # Model cards and management
+│       │   │   ├── Navigation/   # Sidebar, main nav, sub-nav
+│       │   │   ├── Charts/       # Frequency charts, file selection
+│       │   │   └── Settings/     # Settings panels & dialogs
+│       │   ├── Files/        # File & folder management
+│       │   │   ├── FileBrowser/   # File list, upload dialogs
+│       │   │   └── FolderBrowser/# Genre folder tree, create/edit dialogs
+│       │   └── ui/           # Reusable UI (Radix-based)
+│       ├── CodeBehind/       # Custom hooks and page/component logic
+│       │   ├── Components/   # useAuthContext, useFileBrowserContext, useChartContext, etc.
+│       │   └── Pages/        # useLoginPage, Settings page logic
+│       ├── Enums/            # App enums (e.g. Pages)
+│       ├── Generated/        # Generated client/types (do not edit)
+│       │   └── appwrite/     # Appwrite SDK types, DB IDs, constants
+│       ├── hooks/            # Shared hooks (e.g. use-lazy-ref, use-as-ref)
+│       ├── lib/              # Core services and utilities
+│       │   ├── Cache/        # In-memory caches (ICache, InMemoryFileCache, InMemoryFolderCache)
+│       │   ├── Database/     # Appwrite DB services (FileService, FolderService), enums, table/column defs
+│       │   ├── Bucket/       # Appwrite storage (bucket client)
+│       │   ├── Functions/    # Appwrite function invocation helpers
+│       │   └── utils.ts, slugify.ts, appwrite.ts
+│       ├── scripts/          # Build/type patches (e.g. patch-appwrite-types.js)
+│       └── public/           # Static assets
+└── README.md
 ```
 
 ## Getting Started
@@ -73,16 +95,17 @@ A machine learning-powered web application that allows users to train custom mus
 1. Clone the repository:
 ```bash
 git clone <your-repo-url>
-cd music-genre-classifier
+cd Praca-magisterska
 ```
 
-2. Install dependencies:
+2. Install dependencies for the Next.js app:
 ```bash
+cd sites/Praca-magisterska
 npm install
 ```
 
 3. Set up environment variables:
-Create a `.env.local` file in the root directory with your Appwrite credentials:
+Create a `.env.local` file in `sites/Praca-magisterska/` with your Appwrite credentials:
 ```env
 NEXT_PUBLIC_APPWRITE_ENDPOINT=<your-appwrite-endpoint>
 NEXT_PUBLIC_APPWRITE_PROJECT_ID=<your-project-id>
@@ -92,15 +115,17 @@ NEXT_PUBLIC_APPWRITE_BUCKET_ID=<your-bucket-id>
 ```
 
 4. Set up Appwrite Backend:
-   - Create a new Appwrite project
-   - Set up the database collections (folders, files, models)
-   - Create a storage bucket for audio files
-   - Deploy Appwrite Functions for ML processing:
+   - Use the root `appwrite.config.json` to align with the project’s databases (e.g. `genres`, `files`, `models`), buckets, and functions.
+   - Deploy Appwrite functions from the repo root:
      ```bash
      appwrite deploy function
      ```
+   - Regenerate client/types from the Next.js site if needed:
+     ```bash
+     cd sites/Praca-magisterska && npm run generate:appwrite
+     ```
 
-5. Run the development server:
+5. Run the development server (from `sites/Praca-magisterska/`):
 ```bash
 npm run dev
 ```
@@ -154,10 +179,14 @@ Upload a new audio sample, and your trained model will predict which genre it be
 
 ## Scripts
 
+Run from `sites/Praca-magisterska/`:
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+- `npm run generate:appwrite` - Regenerate Appwrite client/types from root config and apply patches
+- `npm run patch:appwrite` - Apply type patches to generated Appwrite code
 
 ## Machine Learning Architecture
 
