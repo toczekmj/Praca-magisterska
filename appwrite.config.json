@@ -263,6 +263,33 @@
                     "size": 200,
                     "default": null,
                     "encrypt": false
+                },
+                {
+                    "key": "artifact_file_id",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 80,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "feature_length",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "default": 2000,
+                    "min": -9223372036854775808,
+                    "max": 9223372036854775807
+                },
+                {
+                    "key": "genre_names",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 10000,
+                    "default": null,
+                    "encrypt": false
                 }
             ],
             "indexes": []
