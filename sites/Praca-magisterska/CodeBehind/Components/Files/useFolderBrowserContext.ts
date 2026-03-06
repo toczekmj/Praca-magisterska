@@ -1,11 +1,11 @@
-import {Models} from "appwrite";
 import {FolderUpdateEvent} from "@/Enums/FolderUpdateEvent";
 import {useAuth} from "@/components/Auth/AuthContext";
 import {FolderColumns} from "@/lib/Database/Enums/FolderColumns";
 import {CreateFolder, DeleteFolder, UpdateFolder} from "@/lib/Database/Services/FolderService";
+import { Genres } from "@/Generated/appwrite/types";
 
 export interface FolderBrowserProps {
-    folders: Models.DefaultRow[] | null;
+    folders: Genres[] | null;
     selectedFolder: string | null;
     onFolderSelect: (event: FolderUpdateEvent, folderId: string | null) => void;
 }

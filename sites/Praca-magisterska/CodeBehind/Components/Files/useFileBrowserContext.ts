@@ -1,13 +1,13 @@
 import {useEffect, useMemo, useState} from "react";
 import {DeleteFile, GetFiles} from "@/lib/Database/Services/FileService";
-import {Models} from "appwrite";
 import {useAuth} from "@/components/Auth/AuthContext";
 import {ExecuteFftInBackground} from "@/lib/Functions/functions";
 import {FileColumns} from "@/lib/Database/Enums/FileColumns";
 import { IsComputationOngoing } from "@/lib/Database/Services/FolderService";
+import { Files } from "@/Generated/appwrite";
 
 function useFileBrowserContext(folderId: string | null) {
-    const [files, setFiles] = useState<Models.DefaultRow[]>([]);
+    const [files, setFiles] = useState<Files[]>([]);
     const [loading, setLoading] = useState(false);
     const {currentUserInfo} = useAuth();
     
