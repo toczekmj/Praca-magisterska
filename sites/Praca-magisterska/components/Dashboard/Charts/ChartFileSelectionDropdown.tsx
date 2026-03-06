@@ -1,8 +1,6 @@
 'use client'
 
 import { Files, Genres } from "@/Generated/appwrite";
-import { FileColumns } from "@/lib/Database/Enums/FileColumns";
-import { FolderColumns } from "@/lib/Database/Enums/FolderColumns";
 import { Select } from "@radix-ui/themes";
 import { Dispatch, SetStateAction } from "react";
 
@@ -34,9 +32,9 @@ export default function ChartFileSelectionDropdown(
                         <Select.Content position="popper">
                             {
                                 folders.map(folder => (
-                                    <Select.Group key={folder[FolderColumns.ID]}>
-                                        <Select.Item value={folder[FolderColumns.ID]}>
-                                            {folder[FolderColumns.ReadableName]}
+                                    <Select.Group key={folder.$id}>
+                                        <Select.Item value={folder.$id}>
+                                            {folder.ReadableName}
                                         </Select.Item>
                                     </Select.Group>
                                 ))
@@ -56,10 +54,10 @@ export default function ChartFileSelectionDropdown(
                         <Select.Content position="popper">
                             {
                                 files.map((file) => (
-                                    <Select.Group key={file[FileColumns.ID]}>
-                                        <Select.Item value={file[FileColumns.ID]} disabled={!file[FileColumns.CsvDataFileID]}>
-                                            {file[FileColumns.FileName]}
-                                            {file[FileColumns.CsvDataFileID] ? "" : " (CSV not ready)"}
+                                    <Select.Group key={file.$id}>
+                                        <Select.Item value={file.$id} disabled={!file.data_file_id}>
+                                            {file.FileName}
+                                            {file.data_file_id ? "" : " (CSV not ready)"}
                                         </Select.Item>
                                     </Select.Group>
                                 ))
