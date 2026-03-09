@@ -1,28 +1,17 @@
 'use client'
 
 import FileBrowserWindow from "@/components/Files/FileBrowserWindow";
-import {useEffect, useState} from "react";
-import {FolderUpdateEvent} from "@/Enums/FolderUpdateEvent";
-import {GetFolders} from "@/lib/Database/Services/FolderService";
-import { Genres } from "@/Generated/appwrite";
+import { useFoldersQuery } from "@/CodeBehind/Components/Files/useFoldersQuery";
 
 export default function Files() {
 
-    const [folders, setFolders] = useState<Genres[] | null>(null);
-    const [event, setEvent] = useState<FolderUpdateEvent | null>(null);
-
-    useEffect(() => {
-        if (event != FolderUpdateEvent.Select){
-            GetFolders().then(v => setFolders(v));
-        }
-    }, [event])
+    const { data: folders, isLoading, isError, errorMessage } = useFoldersQuery();
 
     return (
         <div className="flex grow flex-col">
-            <FileBrowserWindow
-                folders={folders}
-                onFolderModify={setEvent}
-            />
+            {isLoading && <div>Loading...</div>}
+            {isError && <div>Error: {errorMessage}</div>}
+            {folders && <FileBrowserWindow folders={folders} />}
         </div>
     );
 }

@@ -1,3 +1,4 @@
+'use client'
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/components/Auth/AuthContext';
@@ -5,11 +6,12 @@ import { Container, Theme } from "@radix-ui/themes";
 import { Navbar } from "@/components/Navbar";
 import React from "react";
 import Sidebar from "@/components/Dashboard/Navigation/SideBar";
+import QueryProvider from '@/components/TanStack/QueryProvider';
 
-export const metadata: Metadata = {
-    title: 'ShazaML',
-    description: 'Praca magisterska Michał Toczek',
-};
+// export const metadata: Metadata = {
+//     title: 'ShazaML',
+//     description: 'Praca magisterska Michał Toczek',
+// };
 
 export default function RootLayout({
     children,
@@ -25,15 +27,17 @@ export default function RootLayout({
                     radius="medium"
                     scaling="95%">
                     <AuthProvider>
-                        <Navbar />
-                        <Container>
-                            <div className="h-full flex flex-col items-center">
-                                <Sidebar />
-                                <div className="flex flex-col w-full">
-                                    {children}
+                        <QueryProvider>
+                            <Navbar />
+                            <Container>
+                                <div className="h-full flex flex-col items-center">
+                                    <Sidebar />
+                                    <div className="flex flex-col w-full">
+                                        {children}
+                                    </div>
                                 </div>
-                            </div>
-                        </Container>
+                            </Container>
+                        </QueryProvider>
                     </AuthProvider>
                     <script>0</script>
                 </Theme>
