@@ -51,4 +51,4 @@ export const getMainNavItems = (): NavItem[] => NAV_ITEMS.filter(item => item.pa
  * @param parent - The parent page.
  * @returns The sub navigation items.
  */
-export const getSubNavItems = (parent: Pages): NavItem[] => NAV_ITEMS.filter(item => item.parent === parent);
+export const getSubNavItems = (parent: Pages | string): NavItem[] => NAV_ITEMS.filter(item => item.parent === parent || item.parent === parent as Pages);

@@ -1,4 +1,3 @@
-import {FolderUpdateEvent} from "#/enums/FolderUpdateEvent";
 import {useAuth} from "#/components/auth/AuthContext";
 import {CreateFolder, DeleteFolder, UpdateFolder} from "#/lib/database/services/FolderService";
 import type { Genres } from "#/generated/appwrite/types";
@@ -6,10 +5,11 @@ import type { Genres } from "#/generated/appwrite/types";
 export interface FolderBrowserProps {
     folders: Genres[] | null;
     selectedFolder: string | null;
-    onFolderSelect: (event: FolderUpdateEvent, folderId: string | null) => void;
+    onFolderInvalidate: () => void;
+    onFolderSelect: (id: string | null) => void;
 }
 
-function useFolderBrowserContext({selectedFolder, onFolderSelect, folders} : FolderBrowserProps) {
+function useFolderBrowserContext({selectedFolder, folders, onFolderInvalidate, onFolderSelect} : FolderBrowserProps) {
     const {currentUserInfo} = useAuth();
 
     const isSelectedFolder = (id: string) => {
@@ -17,14 +17,10 @@ function useFolderBrowserContext({selectedFolder, onFolderSelect, folders} : Fol
     }
 
     async function deleteFolder() {
-        // TODO: for some reason the order in which we execute
-        // DeleteFolder() and onFolderSelect() matters
-        // and this whole logic isn't the greatest - as this events are passed
-        // up to the page component.
-        // I should probably refactor this later.
         if (selectedFolder) {
             await DeleteFolder(selectedFolder);
-            onFolderSelect(FolderUpdateEvent.Delete, null);
+            onFolderInvalidate();
+            onFolderSelect(null);
         }
     }
 
@@ -35,7 +31,8 @@ function useFolderBrowserContext({selectedFolder, onFolderSelect, folders} : Fol
         }
 
         const result = await CreateFolder(name, currentUserInfo?.$id ?? "");
-        onFolderSelect(FolderUpdateEvent.Select, result.$id);
+        onFolderInvalidate();
+        onFolderSelect(result.$id);
     }
 
     async function editFolder(name: string){
@@ -45,8 +42,7 @@ function useFolderBrowserContext({selectedFolder, onFolderSelect, folders} : Fol
         }
 
         await UpdateFolder(selectedFolder, name);
-        folders = folders?.filter(f => f.$id != selectedFolder) ?? null;
-        onFolderSelect(FolderUpdateEvent.Update, selectedFolder)
+        onFolderInvalidate();
     }
 
     function getSelectedFolderName() {
@@ -61,6 +57,7 @@ function useFolderBrowserContext({selectedFolder, onFolderSelect, folders} : Fol
         getSelectedFolderName,
         deleteFolder,
         onFolderSelect,
+        onFolderInvalidate,
         folders,
         selectedFolder,
     }

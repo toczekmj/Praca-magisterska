@@ -47,7 +47,7 @@ export async function LinkFile(folderId: string, fileId: string, fileName: strin
         "FileName": fileName,
         "genre": folderId,
     };
-    
+
     const createdFile = await database.create(data, {
         permissions: (permission, role) => [
             permission.write(role.user(userId)),
@@ -69,10 +69,10 @@ export async function DeleteFile(fileId: string, fileCache:ICache<string, Files>
     if (hasCsvData) {
         await DeleteFileFromBucket(file.data_file_id!)
     }
-    
+
     if (hasFile) {
         await DeleteFileFromBucket(file.FileId)
-    } 
+    }
 
     await database.delete(fileId);
     fileCache.delete(fileId);
