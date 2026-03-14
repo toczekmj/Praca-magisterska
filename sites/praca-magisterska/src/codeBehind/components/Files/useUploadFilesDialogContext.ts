@@ -25,7 +25,6 @@ function useUploadFilesDialogContext(folderId: string) {
                         const percentage = (progressData.chunksUploaded / progressData.chunksTotal) * 100;
                         onProgress(file, percentage);
                     })
-                    console.log(createdFile);
                     await LinkFile(folder, createdFile.$id, createdFile.name, userId);
                 }
 
